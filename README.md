@@ -25,10 +25,15 @@ COUNTIF(C3:C3321,"Free")
 
 ```
 COUNTIFS(C3:C3321,"Free",R3:R3321,"Manhattan")
+1573
 COUNTIFS(C3:C3321,"Free",R3:R3321,"Brooklyn")
+540
 COUNTIFS(C3:C3321,"Free",R3:R3321,"Queens")
+379
 COUNTIFS(C3:C3321,"Free",R3:R3321,"Bronx")
+196
 COUNTIFS(C3:C3321,"Free",R3:R3321,"Staten Island")
+48
 ```
 
 3. Number of free Wi-Fi hotspots provided by the LinkNYC - Citybridge in each of the zip codes of Manhattan.
@@ -99,7 +104,7 @@ sql="SELECT postcode,count(*) FROM  hotspots GROUP BY postcode ORDER BY count(*)
 4. Display a list of the name, location, and zip code for all of the free Wi-Fi locations provided by `ALTICEUSA` in Bronx, in descending order of zip code.
 
 ```sql
-sql="SELECT name,location,postcode FROM  hotspots where provider='ALTICEUSA' ORDER BY postcode desc"
+sql="SELECT name,location,postcode FROM  hotspots where provider='ALTICEUSA' and borough_name="Bronx" ORDER BY postcode desc"
 ```
 
 5. Display the names of each of the boroughs of NYC, and the number of free Wi-Fi hotspots in each.
@@ -158,13 +163,13 @@ This section contains responses to the questions on normalization and entity-rel
 1. Is the data in `wifi.csv` in fourth normal form?
 
 ```
-yes
+no
 ```
 
 2. Explain why or why not the `wifi.csv` data meets 4NF.
 
 ```
-we cannot limit non-trivial and non-functional multivalued dependencies due to relational schema's prperties. Within the data, if the relation has two rows, A and B, if one of the value of their attributes is equal, then the two new tuples obtained through switching the values of their other attribute can be found to match them in the original table. 
+nta and nta_code have delivery dependency, latitude and longitude is facts about location instead of hotspot, thus, there is data redundancy, and thus it does not meet 3nf. 
 ```
 
 3. Is the data in `neighborhood_populations.csv` in fourth normal form?
@@ -176,7 +181,7 @@ no
 4. Explain why or why not the `neighborhood_populations.csv` data meets 4NF.
 
 ```
-because there is no primary key info in the data and thus no seperate id for elements.
+It does not meet the requirements of 3NF. nta and nta code have delivery dependency, nta_code reflect information about only the nta but not the entity, could be split into two tables.
 ```
 
 5. Use [draw.io](https://draw.io) to draw an Entity-Relationship Diagram showing a 4NF-compliant form of this data, including primary key field(s), relationship(s), and cardinality.
